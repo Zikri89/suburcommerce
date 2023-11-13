@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router, Navigation, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeroComponent } from './hero/hero.component';
@@ -15,4 +15,13 @@ import { ContactComponent } from './pages/contact/contact.component';
 })
 export class AppComponent {
   title = 'mardikakopi';
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showHeroComponent = this.router.url !== '/#hero';
+      }
+    })
+  }
+
+  showHeroComponent: boolean = true;
 }
