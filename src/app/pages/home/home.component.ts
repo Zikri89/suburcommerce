@@ -8,10 +8,10 @@ import { HeroComponent } from '../../hero/hero.component';
   standalone: true,
   imports: [CommonModule, HeroComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
-constructor(private route: ActivatedRoute, private el: ElementRef) { }
+  constructor(private route: ActivatedRoute, private el: ElementRef) {}
   ngAfterViewInit() {
     this.route.fragment.subscribe(fragment => {
       if (fragment) {
