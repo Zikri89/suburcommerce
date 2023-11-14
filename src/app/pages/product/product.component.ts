@@ -1,9 +1,11 @@
-import { Component, ElementRef  } from '@angular/core';
+import { Component, ElementRef, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Product, ProductList } from '../../models/product';
-import { NetworkApiService } from '../../services/networkapi.service';
+import { ProductList } from '../../models/product';
+import { NetworkApiService } from '../../services/networkapi/networkapi.service';
+import { TextUtilsService } from '../../services/text-utils/text-utils.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-product',
@@ -13,11 +15,23 @@ import { NetworkApiService } from '../../services/networkapi.service';
   styleUrl: './product.component.css',
   providers: [NetworkApiService, HttpClient]
 })
-export class ProductComponent {
+
+export class ProductComponent implements OnInit {
   data: ProductList | null = null;
   errorMessage!: string;
-  constructor(private route: ActivatedRoute, private el: ElementRef, private myService: NetworkApiService<ProductList>) { }
-  ngAfterViewInit() {
+  imageUrl: string = "";
+  constructor(
+    private route: ActivatedRoute,
+    private el: ElementRef,
+    private myService: NetworkApiService<ProductList>,
+    private textUtilsService: TextUtilsService
+  ) { }
+
+  limitText(description: string): string {
+    return this.textUtilsService.limitText(description, 55);
+  }
+
+  ngOnInit() {
     this.route.fragment.subscribe(fragment => {
       if (fragment) {
         const element = this.el.nativeElement.querySelector(`.${fragment}`);
@@ -27,7 +41,9 @@ export class ProductComponent {
       }
     });
 
-    this.myService.getDataList({param : 'products'}).subscribe({
+    this.imageUrl = environment.imageUrl
+
+    this.myService.getData({param : 'Product/ListWithPrice?pageNumber=1&pageSize=5'}).subscribe({
       next: (value) => {
         this.data = value;
       },

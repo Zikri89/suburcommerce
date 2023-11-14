@@ -43,24 +43,44 @@
           <h3>Starters</h3>
         </div>
 
-        <div class="row gy-5" *ngIf="data?.products && data!.products.length > 0; else loading">
-          <div class="col-lg-3 menu-item" *ngFor="let product of data?.products; let i = index">
-            <a href="{{product.thumbnail}}" class="glightbox"><img src="{{product.thumbnail}}" class="menu-img img-fluid" alt=""></a>
-            <h4>{{product.title}}</h4>
-            <p class="ingredients">
-              {{product.description}}
-            </p>
+        <div class="row gy-5" *ngIf="data! && data!.length > 0; else loading">
+          <div class="col-lg-3 menu-item" *ngFor="let product of data; let i = index">
+            <ng-container *ngIf="product.details && product.details.length > 0; else defaultImage">
+              <a href="{{ imageUrl + '' + product.details[0].imageUrl }}" class="glightbox">
+                <img src="{{ imageUrl + '' + product.details[0].imageUrl }}" class="menu-img img-fluid" alt="">
+              </a>
+            </ng-container>
+
+            <ng-template #defaultImage>
+              <p>No Image</p>
+            </ng-template>
+
+            <h4>{{product.name}}</h4>
+            <div class="ingredients" [innerHTML]="limitText(product.remarks)"></div>
             <p class="price">
-              ${{product.price}}
+              ${{product.sellPrice}}
             </p>
           </div><!-- Menu Item -->
         </div>
+        <!-- Loading Indicator -->
         <ng-template #loading>
-          <p>Loading...</p>
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading...</p>
+          </div>
         </ng-template>
-        <div *ngIf="errorMessage">
-          <p>Error: {{ errorMessage }}</p>
-        </div>
+
+        <!-- Content -->
+        <ng-template #content>
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="error-container">
+            <p>Error: {{ errorMessage }}</p>
+          </div>
+
+          <!-- Your main content goes here -->
+          <!-- For example, display your products or other data -->
+
+        </ng-template>
       </div><!-- End Starter Menu Content -->
 
       <div class="tab-pane fade" id="menu-breakfast">

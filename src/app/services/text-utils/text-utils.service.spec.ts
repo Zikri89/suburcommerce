@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NetworkApiService } from './networkapi.service';
+import { TextUtilsService } from './text-utils.service';
 
-describe('NetworkApiService', () => {
-  let service: NetworkApiService;
+describe('TextUtilsService', () => {
+  let service: TextUtilsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NetworkApiService);
+    service = TestBed.inject(TextUtilsService);
   });
 
   it('should be created', () => {
