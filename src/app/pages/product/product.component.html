@@ -56,7 +56,9 @@
             </ng-template>
 
             <h4>{{product.name}}</h4>
-            <div class="ingredients" [innerHTML]="limitText(product.remarks)"></div>
+            <p class="ingredients">
+              {{ limitText(product.remarks) }}
+            </p>
             <p class="price">
               ${{product.sellPrice}}
             </p>
@@ -64,23 +66,18 @@
         </div>
         <!-- Loading Indicator -->
         <ng-template #loading>
-          <div class="loading-container">
-            <div class="loading-spinner"></div>
-            <p>Loading...</p>
-          </div>
+          <ng-container *ngIf="!errorMessage">
+            <div class="loading-container">
+              <div class="loading-spinner"></div>
+              <p>Loading...</p>
+            </div>
+          </ng-container>
         </ng-template>
 
-        <!-- Content -->
-        <ng-template #content>
-          <!-- Error Message -->
-          <div *ngIf="errorMessage" class="error-container">
-            <p>Error: {{ errorMessage }}</p>
-          </div>
+        <div *ngIf="errorMessage" class="alert alert-danger text-center">
+          <p>Error: {{ errorMessage }}</p>
+        </div>
 
-          <!-- Your main content goes here -->
-          <!-- For example, display your products or other data -->
-
-        </ng-template>
       </div><!-- End Starter Menu Content -->
 
       <div class="tab-pane fade" id="menu-breakfast">

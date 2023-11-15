@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit} from '@angular/core';
+import { Component, ElementRef, AfterViewInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -16,22 +16,23 @@ import { environment } from '../../../environments/environment.development';
   providers: [NetworkApiService, HttpClient]
 })
 
-export class ProductComponent implements OnInit {
+export class ProductComponent implements AfterViewInit {
   data: ProductList | null = null;
   errorMessage!: string;
   imageUrl: string = "";
+
   constructor(
     private route: ActivatedRoute,
     private el: ElementRef,
     private myService: NetworkApiService<ProductList>,
-    private textUtilsService: TextUtilsService
+    private textUtilsService: TextUtilsService,
   ) { }
 
   limitText(description: string): string {
     return this.textUtilsService.limitText(description, 55);
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.route.fragment.subscribe(fragment => {
       if (fragment) {
         const element = this.el.nativeElement.querySelector(`.${fragment}`);
@@ -48,7 +49,7 @@ export class ProductComponent implements OnInit {
         this.data = value;
       },
       error: (error) => {
-        this.errorMessage = error;
+        this.errorMessage = error.message;
       }
     });
   }
