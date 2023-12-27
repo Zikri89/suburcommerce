@@ -18,7 +18,7 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showHeroComponent = this.router.url !== '/#hero';
+        this.showHeroComponent = !(this.router.url === '/home' || this.router.url === '/home#hero');
       }
     })
   }

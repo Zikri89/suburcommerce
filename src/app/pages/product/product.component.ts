@@ -1,11 +1,13 @@
-import { Component, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, ElementRef, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ProductList } from '../../models/product';
-import { NetworkApiService } from '../../services/networkapi/networkapi.service';
+import { BaseRepository } from '../../services/repo/base_repository.service';
 import { TextUtilsService } from '../../services/text-utils/text-utils.service';
 import { environment } from '../../../environments/environment.development';
+import { Product } from '../../models/product.interface';
+import { ProductRepository } from '../../services/repo/product_repository.service';
+import { AuthConstant } from '../../constants/constants.service';
 
 @Component({
   selector: 'app-product',
@@ -13,18 +15,18 @@ import { environment } from '../../../environments/environment.development';
   imports: [CommonModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
-  providers: [NetworkApiService, HttpClient]
+  providers: [HttpClient],
 })
 
-export class ProductComponent implements AfterViewInit {
-  data: ProductList | null = null;
+export class ProductComponent implements OnInit {
   errorMessage!: string;
-  imageUrl: string = "";
+  products!: Product[]
+  imageUrl!: string
 
   constructor(
     private route: ActivatedRoute,
     private el: ElementRef,
-    private myService: NetworkApiService<ProductList>,
+    private _productRepo: ProductRepository<Product>,
     private textUtilsService: TextUtilsService,
   ) { }
 
@@ -32,7 +34,7 @@ export class ProductComponent implements AfterViewInit {
     return this.textUtilsService.limitText(description, 55);
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.route.fragment.subscribe(fragment => {
       if (fragment) {
         const element = this.el.nativeElement.querySelector(`.${fragment}`);
@@ -42,15 +44,16 @@ export class ProductComponent implements AfterViewInit {
       }
     });
 
-    this.imageUrl = environment.imageUrl
-
-    this.myService.getData({param : 'Product/ListWithPrice?pageNumber=1&pageSize=5'}).subscribe({
-      next: (value) => {
-        this.data = value;
+    this._productRepo.products$.subscribe({
+      next: (res) => {
+        console.log(res)
+        this.products = res;
+        this.imageUrl = AuthConstant.IMAGE_URL;
       },
-      error: (error) => {
-        this.errorMessage = error.message;
+      error: (err) => {
+        this.errorMessage = err;
+        console.log(err)
       }
-    });
+    })
   }
 }

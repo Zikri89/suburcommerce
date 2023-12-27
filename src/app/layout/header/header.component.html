@@ -3,14 +3,13 @@
     <div class="container d-flex align-items-center justify-content-between">
 
       <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
         <img src="../../../assets/img/logo-header.png"/>
       </a>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" fragment="hero">Beranda</a></li>
+          <li><a [routerLink]="['home']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" fragment="hero">Beranda</a></li>
           <li><a [routerLink]="['product']" routerLinkActive="active" fragment="initScroll">Produk</a></li>
           <li><a [routerLink]="['partnership']" routerLinkActive="active" fragment="initScroll">Kemitraan</a></li>
           <li class="dropdown"><a href="#"><span>Sign In</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
