@@ -37,8 +37,9 @@ export class ConstantsHeaders {
   }
 
   getHeaders(): HttpHeaders {
+    const token = this.authService.getAccessToken();
     return new HttpHeaders({
-      'Authorization': `Bearer`,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'M_API-Key': '35f53b89-573c-428b-af3c-0a76c77b0d30',
