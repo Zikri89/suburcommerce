@@ -7,11 +7,28 @@ import { ProductDetailComponent } from './pages/product/product-detail/product-d
 import { inject } from '@angular/core';
 import { ProductRepository } from './services/repo/product_repository.service';
 import { Product } from './models/product.interface';
+import CategoryRepository from './services/repo/category_repository.service';
+import { Category } from './models/category.interface';
+import { forkJoin, switchMap } from 'rxjs';
 
 const productResolver = () =>
 {
     const productRepo = inject(ProductRepository<Product>);
-  return productRepo.getListProduct();
+    const categoryRepo = inject(CategoryRepository<Category>);
+
+  return categoryRepo.getList().pipe(
+    switchMap((categories) => {
+      const filteredCategories = categories.filter(
+        (category) => category.alias === 'Drips' || category.alias === 'Beans' || category.alias == 'Beverages'
+      )
+
+      return productRepo.getList().pipe(
+        switchMap((products) => {
+          return [{ categories: filteredCategories, products }];
+        })
+      );
+    })
+  );
 };
 
 export const routes: Routes = [
@@ -20,7 +37,7 @@ export const routes: Routes = [
   {
     path: "product",
     component: ProductComponent,
-    resolve: { productData: productResolver },
+    resolve: { data: productResolver },
     children: [
       {
         path: ":id", component: ProductDetailComponent,

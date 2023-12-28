@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment.development';
 import { Product } from '../../models/product.interface';
 import { ProductRepository } from '../../services/repo/product_repository.service';
 import { AuthConstant } from '../../constants/constants.service';
+import CategoryRepository from '../../services/repo/category_repository.service';
+import { Category } from '../../models/category.interface';
 
 @Component({
   selector: 'app-product',
@@ -20,6 +22,7 @@ import { AuthConstant } from '../../constants/constants.service';
 
 export class ProductComponent implements OnInit {
   errorMessage!: string;
+  categories!: Category[]
   products!: Product[]
   imageUrl!: string
 
@@ -27,6 +30,8 @@ export class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     private el: ElementRef,
     private _productRepo: ProductRepository<Product>,
+    private _categoryRepo: CategoryRepository<Category>,
+    private _activatedRoute: ActivatedRoute,
     private textUtilsService: TextUtilsService,
   ) { }
 
@@ -44,11 +49,13 @@ export class ProductComponent implements OnInit {
       }
     });
 
-    this._productRepo.products$.subscribe({
-      next: (res) => {
-        console.log(res)
-        this.products = res;
+    this._activatedRoute.data.subscribe({
+      next: (res: any) => {
+        this.products = res.data['products'];
+        this.categories = res.data['categories'];
         this.imageUrl = AuthConstant.IMAGE_URL;
+
+        console.log(this.categories)
       },
       error: (err) => {
         this.errorMessage = err;

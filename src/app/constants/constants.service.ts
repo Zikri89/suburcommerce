@@ -25,6 +25,7 @@ export class AuthConstant {
 
 export class UrlConstans {
   static readonly GET_PRODUCT_LIST: string = `${AuthConstant.API_URL}Product/ListWithPrice`;
+  static readonly GET_CATEGORY_LIST: string = `${AuthConstant.API_URL}Category/List`;
 }
 
 @Injectable({

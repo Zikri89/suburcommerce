@@ -10,23 +10,20 @@ import { AuthService } from '../auth/auth.service';
 
 export class ProductRepository<Product> extends BaseRepository<Product> implements IProductRepository<Product> {
   private _products: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
-  constructor(http: HttpClient, private _headers: ConstantsHeaders) {
-    super(http)
-  }
 
   get products$(): Observable<Product[]> {
     return this._products.asObservable();
   }
 
-  getListProduct(): Observable<Product[]> {
 
-    return this.http.get<Product[]>(`${UrlConstans.GET_PRODUCT_LIST}?pageNumber=1&pageSize=5`, { headers: this._headers.getHeaders() })
+  getList(): Observable<Product[]> {
+    return this.getAll(`${UrlConstans.GET_PRODUCT_LIST}?pageNumber=1&pageSize=30`)
       .pipe(tap((res: Product[]) => {
         this._products.next(res)
     }));
   }
 
-  getProductById(id: number): Observable<Product> {
+  getMap(id: number): Observable<Product> {
     throw new Error('Method not implemented.');
   }
 
