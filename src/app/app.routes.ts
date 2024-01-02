@@ -13,36 +13,9 @@ import { Observable, concat, concatMap, forkJoin, from, map, merge, of, switchMa
 
 const productResolver = () =>
 {
-    const productRepo = inject(ProductRepository<Product>);
     const categoryRepo = inject(CategoryRepository<Category>);
 
-  return categoryRepo.getList().pipe(
-    switchMap((categories) => {
-      const filteredCategories = categories.filter(
-        (category) => category.alias === 'Drips' || category.alias === 'Beans' || category.alias == 'Beverages'
-      )
-
-      return productRepo.getTotalProduct().pipe(
-        switchMap((productCounts) => {
-          const pageSize = 5;
-          const totalPages = Math.ceil(productCounts / pageSize);
-          const observables: Observable<Product[]>[] = [];
-
-          for (let i = 1; i <= totalPages; i++) {
-            const observable = productRepo.getList(i, pageSize);
-            observables.push(observable);
-          }
-            //masih bermalsah hanya menampilkna 5 produk tidak update realtime UI nya
-          return concat(...observables).pipe(
-            map((results: Product[]) => {
-              const combinedData = { categories: filteredCategories, products: results };
-              return combinedData;
-            })
-          );
-        })
-      )
-    })
-  );
+  return categoryRepo.getList();
 };
 
 export const routes: Routes = [
