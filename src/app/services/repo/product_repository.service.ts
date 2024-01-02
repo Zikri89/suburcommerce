@@ -1,22 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {
-  BehaviorSubject,
-  Observable,
-  concatMap,
-  forkJoin,
-  map,
-  scan,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { IProductRepository } from './interface/i_product_repository.interface';
 import { BaseRepository } from './base_repository.service';
-import {
-  AuthConstant,
-  ConstantsHeaders,
-  UrlConstans,
-} from '../../constants/constants.service';
+import { UrlConstans } from '../../constants/constants.service';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProductRepository<Product>
