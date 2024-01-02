@@ -19,6 +19,7 @@ import {
   Observable,
   concat,
   concatMap,
+  delay,
   forkJoin,
   of,
   scan,
@@ -87,7 +88,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
         const observables = [];
         for (let i = 1; i <= totalPages; i++) {
-          observables.push(this.productRepo.getList(i, pageSize));
+          observables.push(
+            // kalo mau pake delay agar request ke server nya ada delay nya
+            // this.productRepo.getList(i, pageSize).pipe(delay(2000))
+            this.productRepo.getList(i, pageSize)
+          );
         }
 
         return concat(...observables);
