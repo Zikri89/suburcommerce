@@ -10,6 +10,7 @@ import { ProductRepository } from '../../services/repo/product_repository.servic
 import { AuthConstant } from '../../constants/constants.service';
 import CategoryRepository from '../../services/repo/category_repository.service';
 import { Category } from '../../models/category.interface';
+import { Observable, concatMap, from, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -23,15 +24,13 @@ import { Category } from '../../models/category.interface';
 export class ProductComponent implements OnInit {
   errorMessage!: string;
   categories!: Category[]
-  products!: Product[]
+  products!: Product[];
   imageUrl!: string
+  currentIndex: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     private el: ElementRef,
-    private _productRepo: ProductRepository<Product>,
-    private _categoryRepo: CategoryRepository<Category>,
-    private _activatedRoute: ActivatedRoute,
     private textUtilsService: TextUtilsService,
   ) { }
 
@@ -49,18 +48,11 @@ export class ProductComponent implements OnInit {
       }
     });
 
-    this._activatedRoute.data.subscribe({
-      next: (res: any) => {
-        this.products = res.data['products'];
-        this.categories = res.data['categories'];
-        this.imageUrl = AuthConstant.IMAGE_URL;
+    this.route.data.subscribe((data: any) => {
+      this.products = data.data.products;
+    });
 
-        console.log(this.categories)
-      },
-      error: (err) => {
-        this.errorMessage = err;
-        console.log(err)
-      }
-    })
+    this.categories = this.route.snapshot.data['data']['categories']
+    this.imageUrl = AuthConstant.IMAGE_URL
   }
 }

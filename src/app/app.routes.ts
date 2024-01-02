@@ -9,7 +9,7 @@ import { ProductRepository } from './services/repo/product_repository.service';
 import { Product } from './models/product.interface';
 import CategoryRepository from './services/repo/category_repository.service';
 import { Category } from './models/category.interface';
-import { forkJoin, switchMap } from 'rxjs';
+import { Observable, concat, concatMap, forkJoin, from, map, merge, of, switchMap, tap } from 'rxjs';
 
 const productResolver = () =>
 {
@@ -22,11 +22,25 @@ const productResolver = () =>
         (category) => category.alias === 'Drips' || category.alias === 'Beans' || category.alias == 'Beverages'
       )
 
-      return productRepo.getList().pipe(
-        switchMap((products) => {
-          return [{ categories: filteredCategories, products }];
+      return productRepo.getTotalProduct().pipe(
+        switchMap((productCounts) => {
+          const pageSize = 5;
+          const totalPages = Math.ceil(productCounts / pageSize);
+          const observables: Observable<Product[]>[] = [];
+
+          for (let i = 1; i <= totalPages; i++) {
+            const observable = productRepo.getList(i, pageSize);
+            observables.push(observable);
+          }
+            //masih bermalsah hanya menampilkna 5 produk tidak update realtime UI nya
+          return concat(...observables).pipe(
+            map((results: Product[]) => {
+              const combinedData = { categories: filteredCategories, products: results };
+              return combinedData;
+            })
+          );
         })
-      );
+      )
     })
   );
 };

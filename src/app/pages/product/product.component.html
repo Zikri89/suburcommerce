@@ -18,7 +18,7 @@
 
     <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
 
-      <div class="tab-pane fade active show" [attr.id]="'menu-' + category.alias"
+      <div class="tab-pane fade" [ngClass]="{'active show' : i <= 0}" [attr.id]="'menu-' + category.alias"
         *ngFor="let category of categories; let i = index">
 
         <div class="tab-header text-center">
@@ -27,7 +27,7 @@
         </div>
 
         <div class="row" *ngIf="products! && products!.length > 0; else loading">
-          <div class="col-lg-3 menu-item" *ngFor="let product of products; let i = index">
+          <div class="col-lg-3 menu-item" *ngFor="let product of products; let x = index">
             <div *ngIf="product.category?.description == category.description">
               <ng-container *ngIf="product.details && product.details.length > 0; else defaultImage">
                 <a href="{{ imageUrl + '' + product.details[0].imageUrl }}" class="glightbox">
@@ -36,7 +36,7 @@
               </ng-container>
 
               <ng-template #defaultImage>
-                <p>No Image</p>
+                <img src="assets/img/logo.png" class="menu-img img-fluid" alt="">
               </ng-template>
 
               <h4>{{product.name}}</h4>
