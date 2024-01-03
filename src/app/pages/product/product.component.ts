@@ -4,7 +4,6 @@ import {
   Component,
   ElementRef,
   OnInit,
-  NgZone,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,24 +13,13 @@ import { Product } from '../../models/product.interface';
 import { ProductRepository } from '../../services/repo/product_repository.service';
 import { AuthConstant } from '../../constants/constants.service';
 import { Category } from '../../models/category.interface';
-import CategoryRepository from '../../services/repo/category_repository.service';
-import {
-  Observable,
-  concat,
-  concatMap,
-  delay,
-  forkJoin,
-  of,
-  scan,
-  switchMap,
-  takeLast,
-  tap,
-} from 'rxjs';
+import { concat, concatMap } from 'rxjs';
+import { Lightbox, LightboxModule } from 'ngx-lightbox';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LightboxModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
   providers: [HttpClient],
@@ -43,15 +31,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
   imageUrl!: string;
   currentIndex: number = 0;
   productsLoaded: boolean = false;
+  images: Array<any> = [];
 
   constructor(
     private route: ActivatedRoute,
     private el: ElementRef,
     private textUtilsService: TextUtilsService,
-    private categoryRepo: CategoryRepository<Category>,
     private productRepo: ProductRepository<Product>,
     private cdr: ChangeDetectorRef,
-    private zone: NgZone
+    private _lightbox: Lightbox
   ) {}
 
   limitText(description: string): string {
@@ -107,11 +95,32 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.products.push(...res);
         this.imageUrl = AuthConstant.IMAGE_URL;
         this.productsLoaded = true;
+
+        for (let i = 0; i <= this.products.length; i++) {
+          const product = this.products[i];
+          if (product && product.details && product.details[0]) {
+            const src = this.imageUrl + '' + product.details[0].imageUrl;
+            const caption = this.limitText(product.remarks);
+            const thumb = this.imageUrl + product.details[0].imageUrl;
+            const album = {
+              src: src,
+              caption: caption,
+              thumb: thumb,
+            };
+
+            this.images.push(album);
+          }
+        }
+
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.log(err);
       },
     });
+  }
+
+  open(index: number): void {
+    this._lightbox.open(this.images, index);
   }
 }

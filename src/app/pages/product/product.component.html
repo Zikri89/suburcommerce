@@ -30,9 +30,8 @@
           <div class="col-lg-3 menu-item" *ngFor="let product of products; let x = index">
             <div *ngIf="product.category?.description == category.description">
               <ng-container *ngIf="product.details && product.details.length > 0; else defaultImage">
-                <a href="{{ imageUrl + '' + product.details[0].imageUrl }}" class="glightbox">
-                  <img src="{{ imageUrl + '' + product.details[0].imageUrl }}" class="menu-img img-fluid" alt="">
-                </a>
+                <img [src]="imageUrl + '' + product.details[0].imageUrl" (click)="open(x)" class="menu-img img-fluid"
+                  alt="">
               </ng-container>
 
               <ng-template #defaultImage>
