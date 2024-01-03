@@ -16,7 +16,7 @@
     <div *ngFor="let category of categories">
       <h2 class="text-white">{{ category.name }}</h2>
       <div class="row" *ngIf="getProductsByCategory(category).length > 0; else loading">
-        <div class="col-lg-2 menu-item custome-ui-item-product p-0"
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6 menu-item custome-ui-item-product p-0"
           *ngFor="let product of getProductsByCategory(category); let x = index">
           <div *ngIf="product.details && product.details.length > 0; else defaultImage">
             <img [src]="imageUrl + '' + product.details[0].imageUrl" class="img-fluid pb-2" alt="">
@@ -26,8 +26,7 @@
           </ng-template>
           <div class="p-2">
             <h4>{{product.name}}</h4>
-            <div class="ingredients" [innerHTML]="limitText(product.remarks)">
-            </div>
+            <div class="ingredients" [innerHTML]="limitText(product.remarks)"></div>
             <p class="price"><strong>Rp {{product.sellPrice}}</strong></p>
           </div>
         </div>
