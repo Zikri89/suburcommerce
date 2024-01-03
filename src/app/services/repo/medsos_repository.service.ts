@@ -2,7 +2,6 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { BaseRepository } from './base_repository.service';
 import { UrlConstans } from '../../constants/constants.service';
 import { Injectable } from '@angular/core';
-import { IBannerRepository } from './interface/i_banner_repository.interface';
 import { IMedsosRepository } from './interface/i_medsos_repository.interface';
 
 @Injectable({ providedIn: 'root' })

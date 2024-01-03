@@ -3,8 +3,9 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-sm-12">
-          <div class="col-md-3">
-            <a style="color:white" target="_blank" href=""></a>
+          <div class="col-md-3" *ngFor="let med of medsos">
+            <a style="color:white" target="_blank"
+              [routerLink]="[med.targetUrl]">{{ med.description.toUpperCase() }}</a>
           </div>
         </div>
       </div>
