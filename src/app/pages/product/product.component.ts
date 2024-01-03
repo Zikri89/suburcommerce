@@ -48,27 +48,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return this.textUtilsService.limitText(description, 55);
   }
 
-  searchProducts() {
-    this.searchErrorMessage = '';
-
-    if (this.searchTerm.trim() !== '') {
-      const searchTermLower = this.searchTerm.toLowerCase();
-
-      const filteredProducts = this.products.filter((product) =>
-        product.name.toLowerCase().includes(searchTermLower)
-      );
-
-      if (filteredProducts.length > 0) {
-        this.products = filteredProducts;
-      } else {
-        this.searchErrorMessage = `Produk ${this.searchTerm} tidak tersedia`;
-      }
-    } else {
-      this.products = [];
-      this.ngAfterViewInit();
-    }
-  }
-
   ngOnInit() {
     this.route.fragment.subscribe((fragment) => {
       if (fragment) {
@@ -124,6 +103,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
         console.log(err);
       },
     });
+  }
+
+  searchProducts() {
+    this.searchErrorMessage = '';
+
+    if (this.searchTerm.trim() !== '') {
+      const searchTermLower = this.searchTerm.toLowerCase();
+
+      const filteredProducts = this.products.filter((product) =>
+        product.name.toLowerCase().includes(searchTermLower)
+      );
+
+      if (filteredProducts.length > 0) {
+        this.products = filteredProducts;
+      } else {
+        this.searchErrorMessage = `Produk <strong> ${this.searchTerm} </strong> tidak cocok dengan nama produk yang tersedia <br/> periksa kembali keyword pencarian anda`;
+      }
+    } else {
+      this.products = [];
+      this.ngAfterViewInit();
+    }
   }
 
   getProductsByCategory(category: Category) {

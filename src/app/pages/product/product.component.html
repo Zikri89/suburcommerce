@@ -1,11 +1,11 @@
 <section id="menu" class="menu initScroll bg-black mt-5">
   <div class="container" data-aos="fade-up">
     <div *ngIf="searchErrorMessage" class="alert alert-danger text-center">
-      <p>Error: {{ searchErrorMessage }}</p>
+      <p [innerHTML]="searchErrorMessage"></p>
     </div>
 
     <div class="search-container">
-      <input (keyup)="searchProducts()" type="text" placeholder="Search products..." [(ngModel)]="searchTerm" />
+      <input (keyup)="searchProducts()" type="text" placeholder="Cari Produk Disini..." [(ngModel)]="searchTerm" />
     </div>
 
     <div class="section-header">
