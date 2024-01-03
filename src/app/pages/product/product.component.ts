@@ -32,6 +32,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   currentIndex: number = 0;
   productsLoaded: boolean = false;
   images: Array<any> = [];
+  slides: Array<any> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -94,7 +95,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.products.push(...res);
         this.imageUrl = AuthConstant.IMAGE_URL;
         this.productsLoaded = true;
-
         this.cdr.detectChanges();
       },
       error: (err) => {
