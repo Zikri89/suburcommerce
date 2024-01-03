@@ -1,3 +1,8 @@
+.hero {
+  background-color: #0d1215;
+  min-height: 800px;
+}
+
 .container h2 {
   letter-spacing: 5px;
   font-family: Arial Black;
