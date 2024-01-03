@@ -1,0 +1,10 @@
+.custome-ui-item-product {
+  border-radius: 15px;
+  background: white;
+  margin: 15px;
+  text-align: center;
+}
+
+.custome-ui-item-product img {
+  border-radius: 15px;
+}

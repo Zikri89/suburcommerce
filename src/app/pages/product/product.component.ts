@@ -14,13 +14,12 @@ import { ProductRepository } from '../../services/repo/product_repository.servic
 import { AuthConstant } from '../../constants/constants.service';
 import { Category } from '../../models/category.interface';
 import { concat, concatMap } from 'rxjs';
-import { Lightbox, LightboxModule } from 'ngx-lightbox';
 import { HeroComponent } from '../../hero/hero.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, LightboxModule, HeroComponent],
+  imports: [CommonModule, HeroComponent],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
   providers: [HttpClient],
@@ -39,8 +38,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private el: ElementRef,
     private textUtilsService: TextUtilsService,
     private productRepo: ProductRepository<Product>,
-    private cdr: ChangeDetectorRef,
-    private _lightbox: Lightbox
+    private cdr: ChangeDetectorRef
   ) {}
 
   limitText(description: string): string {
@@ -97,22 +95,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.imageUrl = AuthConstant.IMAGE_URL;
         this.productsLoaded = true;
 
-        for (let i = 0; i <= this.products.length; i++) {
-          const product = this.products[i];
-          if (product && product.details && product.details[0]) {
-            const src = this.imageUrl + '' + product.details[0].imageUrl;
-            const caption = this.limitText(product.remarks);
-            const thumb = this.imageUrl + product.details[0].imageUrl;
-            const album = {
-              src: src,
-              caption: caption,
-              thumb: thumb,
-            };
-
-            this.images.push(album);
-          }
-        }
-
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -121,7 +103,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
-  open(index: number): void {
-    this._lightbox.open(this.images, index);
+  getProductsByCategory(category: Category) {
+    return this.products
+      ? this.products.filter(
+          (product) => product.category?.alias === category.alias
+        )
+      : [];
   }
 }

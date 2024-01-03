@@ -1,67 +1,44 @@
 <app-hero></app-hero>
-<section id="menu" class="menu initScroll">
+<section id="menu" class="menu initScroll bg-black">
   <div class="container" data-aos="fade-up">
-
     <div class="section-header">
-      <h2>Our Coffee</h2>
-      <p>Check Our <span>Yummy Coffee</span></p>
+      <h2 class="text-white">Our Coffee</h2>
+      <p class="text-white">Check Our <span class="text-white">Yummy Coffee</span></p>
     </div>
 
-    <ul class="nav nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
-
-      <li class="nav-item" *ngFor="let category of categories; let i = index">
-        <a class="nav-link" [ngClass]="{'active show': i === 0}" data-bs-toggle="tab"
-          [attr.data-bs-target]="'#menu-' + category.alias">
-          <h4>{{ category.name }}</h4>
-        </a>
-      </li>
-    </ul>
-
-    <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
-
-      <div class="tab-pane fade" [ngClass]="{'active show' : i <= 0}" [attr.id]="'menu-' + category.alias"
-        *ngFor="let category of categories; let i = index">
-
-        <div class="tab-header text-center">
-          <p>Menu</p>
-          <h3>{{category.name}}</h3>
-        </div>
-
-        <div class="row" *ngIf="products! && products!.length > 0; else loading">
-          <div class="col-lg-3 menu-item" *ngFor="let product of products; let x = index">
-            <div *ngIf="product.category?.description == category.description">
-              <ng-container *ngIf="product.details && product.details.length > 0; else defaultImage">
-                <img [src]="imageUrl + '' + product.details[0].imageUrl" (click)="open(x)" class="menu-img img-fluid"
-                  alt="">
-              </ng-container>
-
-              <ng-template #defaultImage>
-                <img src="assets/img/logo.png" class="menu-img img-fluid" alt="">
-              </ng-template>
-
-              <h4>{{product.name}}</h4>
-              <div class="ingredients" [innerHTML]="limitText(product.remarks)"></div>
-              <p class="price">
-                ${{product.sellPrice}}
-              </p>
+    <div *ngFor="let category of categories">
+      <h2 class="text-white">{{ category.name }}</h2>
+      <div class="row" *ngIf="getProductsByCategory(category).length > 0; else loading">
+        <div class="col-lg-2 menu-item custome-ui-item-product p-0"
+          *ngFor="let product of getProductsByCategory(category); let x = index">
+          <div>
+            <div *ngIf="product.details && product.details.length > 0; else defaultImage">
+              <img [src]="imageUrl + '' + product.details[0].imageUrl" class="img-fluid pb-2" alt="">
             </div>
+            <ng-template #defaultImage>
+              <img src="assets/img/logo.png" class="img-fluid" alt="">
+            </ng-template>
+            <h4>{{product.name}}</h4>
+            <div class="ingredients" [innerHTML]="limitText(product.remarks)"></div>
+            <p class="price">${{product.sellPrice}}</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Loading Indicator -->
-      <ng-template #loading>
-        <ng-container *ngIf="!errorMessage">
-          <div class="loading-container">
-            <div class="loading-spinner"></div>
-            <p>Loading...</p>
-          </div>
-        </ng-container>
-      </ng-template>
+    <!-- Loading Indicator -->
+    <ng-template #loading>
+      <ng-container *ngIf="!errorMessage">
+        <div class="loading-container">
+          <div class="loading-spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </ng-container>
+    </ng-template>
 
-      <div *ngIf="errorMessage" class="alert alert-danger text-center">
-        <p>Error: {{ errorMessage }}</p>
-      </div>
+    <div *ngIf="errorMessage" class="alert alert-danger text-center">
+      <p>Error: {{ errorMessage }}</p>
     </div>
   </div>
-</section><!-- End Menu Section -->
+</section>
+<!-- End Menu Section -->
