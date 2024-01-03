@@ -1,5 +1,13 @@
 <section id="menu" class="menu initScroll bg-black mt-5">
   <div class="container" data-aos="fade-up">
+    <div *ngIf="searchErrorMessage" class="alert alert-danger text-center">
+      <p>Error: {{ searchErrorMessage }}</p>
+    </div>
+
+    <div class="search-container">
+      <input (keyup)="searchProducts()" type="text" placeholder="Search products..." [(ngModel)]="searchTerm" />
+    </div>
+
     <div class="section-header">
       <h2 class="text-white">Our Coffee</h2>
       <p class="text-white">Check Our <span class="text-white">Yummy Coffee</span></p>
@@ -10,16 +18,17 @@
       <div class="row" *ngIf="getProductsByCategory(category).length > 0; else loading">
         <div class="col-lg-2 menu-item custome-ui-item-product p-0"
           *ngFor="let product of getProductsByCategory(category); let x = index">
-          <div>
-            <div *ngIf="product.details && product.details.length > 0; else defaultImage">
-              <img [src]="imageUrl + '' + product.details[0].imageUrl" class="img-fluid pb-2" alt="">
-            </div>
-            <ng-template #defaultImage>
-              <img src="assets/img/logo.png" class="img-fluid" alt="">
-            </ng-template>
+          <div *ngIf="product.details && product.details.length > 0; else defaultImage">
+            <img [src]="imageUrl + '' + product.details[0].imageUrl" class="img-fluid pb-2" alt="">
+          </div>
+          <ng-template #defaultImage>
+            <img src="assets/img/logo.png" class="img-fluid" alt="">
+          </ng-template>
+          <div class="p-2">
             <h4>{{product.name}}</h4>
-            <div class="ingredients" [innerHTML]="limitText(product.remarks)"></div>
-            <p class="price">${{product.sellPrice}}</p>
+            <div class="ingredients" [innerHTML]="limitText(product.remarks)">
+            </div>
+            <p class="price"><strong>Rp {{product.sellPrice}}</strong></p>
           </div>
         </div>
       </div>

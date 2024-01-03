@@ -1,3 +1,32 @@
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.search-container button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-container button:hover {
+  background-color: #0056b3;
+}
+
 .custome-ui-item-product {
   border-radius: 15px;
   background: white;

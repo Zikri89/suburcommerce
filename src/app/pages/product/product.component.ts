@@ -15,11 +15,12 @@ import { AuthConstant } from '../../constants/constants.service';
 import { Category } from '../../models/category.interface';
 import { concat, concatMap } from 'rxjs';
 import { HeroComponent } from '../../hero/hero.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, HeroComponent],
+  imports: [CommonModule, HeroComponent, FormsModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
   providers: [HttpClient],
@@ -32,7 +33,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   currentIndex: number = 0;
   productsLoaded: boolean = false;
   images: Array<any> = [];
-  slides: Array<any> = [];
+  searchTerm: string = '';
+  searchErrorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +46,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   limitText(description: string): string {
     return this.textUtilsService.limitText(description, 55);
+  }
+
+  searchProducts() {
+    this.searchErrorMessage = '';
+
+    if (this.searchTerm.trim() !== '') {
+      const searchTermLower = this.searchTerm.toLowerCase();
+
+      const filteredProducts = this.products.filter((product) =>
+        product.name.toLowerCase().includes(searchTermLower)
+      );
+
+      if (filteredProducts.length > 0) {
+        this.products = filteredProducts;
+      } else {
+        this.searchErrorMessage = `Produk ${this.searchTerm} tidak tersedia`;
+      }
+    } else {
+      this.products = [];
+      this.ngAfterViewInit();
+    }
   }
 
   ngOnInit() {
