@@ -27,6 +27,8 @@ import {
 } from 'rxjs';
 import BannerRepository from './services/repo/banner_repository.service';
 import { Banner } from './models/banner.interface';
+import MedsosRepository from './services/repo/medsos_repository.service';
+import { Medsos } from './models/medsos.interface';
 
 const productResolver = () => {
   const categoryRepo = inject(CategoryRepository<Category>);
@@ -40,17 +42,27 @@ const bannerResolver = () => {
   return bannerRepo.getList();
 };
 
+const medsosResolver = () => {
+  const medsosRepo = inject(MedsosRepository<Medsos>);
+
+  return medsosRepo.getList();
+};
+
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'home',
     component: HomeComponent,
-    resolve: { data: bannerResolver },
+    resolve: { banner: bannerResolver, medsos: medsosResolver },
   },
   {
     path: 'product',
     component: ProductComponent,
-    resolve: { data: productResolver },
+    resolve: {
+      data: productResolver,
+      banner: bannerResolver,
+      medsos: medsosResolver,
+    },
     children: [
       {
         path: ':id',

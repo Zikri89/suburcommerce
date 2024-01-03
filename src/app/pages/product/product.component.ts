@@ -15,11 +15,12 @@ import { AuthConstant } from '../../constants/constants.service';
 import { Category } from '../../models/category.interface';
 import { concat, concatMap } from 'rxjs';
 import { Lightbox, LightboxModule } from 'ngx-lightbox';
+import { HeroComponent } from '../../hero/hero.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, LightboxModule],
+  imports: [CommonModule, LightboxModule, HeroComponent],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
   providers: [HttpClient],

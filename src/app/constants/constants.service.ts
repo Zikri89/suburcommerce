@@ -27,6 +27,7 @@ export class UrlConstans {
   static readonly GET_PRODUCT_COUNT: string = `${AuthConstant.API_URL}Product/ListWithPrice/CountItems`;
   static readonly GET_CATEGORY_LIST: string = `${AuthConstant.API_URL}Category/List`;
   static readonly GET_BANNER_LIST: string = `${AuthConstant.API_URL}FileUploader/DownloadFrontBanner`;
+  static readonly GET_MEDSOS_LIST: string = `${AuthConstant.API_URL}SocialMedia/List`;
 }
 
 @Injectable({
