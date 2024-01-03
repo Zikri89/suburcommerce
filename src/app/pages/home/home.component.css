@@ -1,0 +1,15 @@
+.container h2 {
+  letter-spacing: 5px;
+  font-family: Arial Black;
+}
+
+.container span {
+  letter-spacing: 5px;
+  font-style: italic;
+}
+
+.container h2,
+p,
+a span {
+  color: white;
+}
