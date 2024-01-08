@@ -5,8 +5,9 @@ import {
   ElementRef,
   HostListener,
   OnInit,
+  ViewChild,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { TextUtilsService } from '../../services/text-utils/text-utils.service';
@@ -21,7 +22,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, HeroComponent, FormsModule],
+  imports: [CommonModule, HeroComponent, FormsModule, RouterLink],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
   providers: [HttpClient],
@@ -134,4 +135,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         )
       : [];
   }
+
+  goToDetailProduct(code: string) {}
 }
