@@ -13,7 +13,6 @@
       <h2 class="text-white">Our Coffee</h2>
       <p class="text-white">Check Our <span class="text-white">Yummy Coffee</span></p>
     </div>
-
     <div *ngFor="let category of categories">
       <h2 class="text-white">{{ category.name }}</h2>
       <div class="row" *ngIf="getProductsByCategory(category).length > 0;">
@@ -33,14 +32,13 @@
             <p class="price"><strong>Rp {{product.sellPrice}}</strong></p>
           </div>
           <div class="p-2">
-            <button (click)="goToDetailProduct(product.code)" routerLinkActive="router-link-active"
+            <button (click)="goToDetailProduct(product)" routerLinkActive="router-link-active"
               class="btn btn-danger w-100">DETAIL</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Loading Indicator -->
     <ng-template #loading>
       <ng-container *ngIf="!errorMessage">
         <div class="loading-container">
@@ -55,4 +53,6 @@
     </div>
   </div>
 </section>
-<!-- End Menu Section -->
+<app-modal [modalTitle]="modalTitle">
+  <app-product-detail [productData]="product"></app-product-detail>
+</app-modal>
