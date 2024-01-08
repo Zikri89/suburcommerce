@@ -1,14 +1,14 @@
 .search-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  top: 100px;
 }
 
 .search-container input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-right: 10px;
+  margin: 0px 10px 10px 10px;
   font-size: 14px;
   flex-grow: 1;
 }

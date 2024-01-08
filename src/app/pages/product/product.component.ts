@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';

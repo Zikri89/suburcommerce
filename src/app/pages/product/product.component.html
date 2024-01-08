@@ -1,11 +1,12 @@
 <section id="menu" class="menu initScroll bg-black mt-5">
+  <div class="container">
+    <div class="search-container fixed-top">
+      <input (keyup)="searchProducts()" type="text" placeholder="Cari Produk Disini..." [(ngModel)]="searchTerm" />
+    </div>
+  </div>
   <div class="container" data-aos="fade-up">
     <div *ngIf="searchErrorMessage" class="alert alert-danger text-center">
       <p [innerHTML]="searchErrorMessage"></p>
-    </div>
-
-    <div class="search-container">
-      <input (keyup)="searchProducts()" type="text" placeholder="Cari Produk Disini..." [(ngModel)]="searchTerm" />
     </div>
 
     <div class="section-header">
@@ -15,7 +16,7 @@
 
     <div *ngFor="let category of categories">
       <h2 class="text-white">{{ category.name }}</h2>
-      <div class="row" *ngIf="getProductsByCategory(category).length > 0; else loading">
+      <div class="row" *ngIf="getProductsByCategory(category).length > 0;">
         <div class="col-lg-2 col-md-4 col-sm-6 col-6 menu-item custome-ui-item-product p-0"
           *ngFor="let product of getProductsByCategory(category); let x = index">
           <div *ngIf="product.details && product.details.length > 0; else defaultImage">
